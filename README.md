@@ -14,7 +14,6 @@ This project builds an end-to-end AI assistant for dermatology. It uses a ResNet
 
 🧪 Full pipeline: preprocessing → training → evaluation → inference
 
-🔧 Tech Stack
 
 TensorFlow / Keras • Python • RAG • NLP • Flask • 
 
