@@ -82,7 +82,7 @@ removeImgBtn.addEventListener("click", () => {
   imageInput.value = "";
 });
 
-/* Drag & drop handling */
+// Drag & drop handling 
 ["dragenter", "dragover"].forEach(evt => {
   dropZone.addEventListener(evt, (e) => {
     e.preventDefault();
@@ -119,13 +119,6 @@ function setSendingState(sending) {
   else sendBtn.classList.remove("disabled");
 }
 
-/**
- * Kirim ke Flask:
- * POST /chat
- * FormData:
- * - message: string
- * - image: file (optional)
- */
 async function sendToFlask(message, file) {
   const fd = new FormData();
   fd.append("message", message || "");
@@ -134,15 +127,12 @@ async function sendToFlask(message, file) {
   const res = await fetch("/chat", {
     method: "POST",
     body: fd
-    // jangan set Content-Type manual, biar browser set boundary FormData
   });
 
-  // Flask bisa balikin JSON error juga
   let data = null;
   try {
     data = await res.json();
   } catch (_) {
-    // kalau bukan json
   }
 
   if (!res.ok) {
@@ -154,7 +144,7 @@ async function sendToFlask(message, file) {
     throw new Error((data && data.error) || "Respon server tidak valid.");
   }
 
-  return data; // { ok:true, reply: "..." }
+  return data; 
 }
 
 async function sendMessage() {
@@ -165,11 +155,11 @@ async function sendMessage() {
 
   if (!msg && !file) return;
 
-  // tampilkan pesan user dulu
+  // tampilkan pesan user
   if (msg) addBubble(msg, "user");
   if (file) addImageBubble(file, "user");
 
-  // reset input UI segera (biar terasa responsif)
+  // reset input UI
   chatText.value = "";
   setSelectedFile(null);
   imageInput.value = "";
@@ -180,8 +170,8 @@ async function sendMessage() {
   try {
     const data = await sendToFlask(msg, file);
 
-    // hapus bubble "Memproses..." terakhir (bot)
-    // cari bubble bot terakhir yang isinya tepat "⏳ Memproses..."
+    // hapus bubble "Memproses..." 
+    // cari bubble bot "Memproses..." 
     const bubbles = chatBox.querySelectorAll(".bubble.bot");
     const lastBot = bubbles[bubbles.length - 1];
     if (lastBot && lastBot.textContent === "⏳ Memproses...") {
